@@ -1,0 +1,31 @@
+[
+  {
+    "type": "function",
+    "name": "registerProvider",
+    "inputs": [
+      { "name": "name", "type": "string" },
+      { "name": "specialty", "type": "string" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "getProvider",
+    "inputs": [{ "name": "providerAddress", "type": "address" }],
+    "outputs": [
+      { "name": "name", "type": "string" },
+      { "name": "specialty", "type": "string" },
+      { "name": "createdAt", "type": "uint256" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "event",
+    "name": "ProviderRegistered",
+    "inputs": [
+      { "name": "providerAddress", "type": "address", "indexed": true },
+      { "name": "name", "type": "string", "indexed": false }
+    ]
+  }
+]

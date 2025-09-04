@@ -1,0 +1,58 @@
+[
+  {
+    "type": "function",
+    "name": "createInvoice",
+    "inputs": [
+      { "name": "patientAddress", "type": "address" },
+      { "name": "amount", "type": "uint256" },
+      { "name": "description", "type": "string" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "payInvoice",
+    "inputs": [{ "name": "invoiceId", "type": "uint256" }],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "getInvoices",
+    "inputs": [{ "name": "address", "type": "address" }],
+    "outputs": [
+      {
+        "components": [
+          { "name": "id", "type": "uint256" },
+          { "name": "patientAddress", "type": "address" },
+          { "name": "providerAddress", "type": "address" },
+          { "name": "amount", "type": "uint256" },
+          { "name": "description", "type": "string" },
+          { "name": "status", "type": "string" },
+          { "name": "createdAt", "type": "uint256" }
+        ],
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "event",
+    "name": "InvoiceCreated",
+    "inputs": [
+      { "name": "invoiceId", "type": "uint256", "indexed": true },
+      { "name": "patientAddress", "type": "address", "indexed": true },
+      { "name": "providerAddress", "type": "address", "indexed": true }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "InvoicePaid",
+    "inputs": [
+      { "name": "invoiceId", "type": "uint256", "indexed": true },
+      { "name": "patientAddress", "type": "address", "indexed": true }
+    ]
+  }
+]

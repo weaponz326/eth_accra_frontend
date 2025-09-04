@@ -1,0 +1,29 @@
+[
+  {
+    "type": "function",
+    "name": "getLogs",
+    "inputs": [{ "name": "patientAddress", "type": "address" }],
+    "outputs": [
+      {
+        "components": [
+          { "name": "accessor", "type": "address" },
+          { "name": "patientAddress", "type": "address" },
+          { "name": "action", "type": "string" },
+          { "name": "timestamp", "type": "uint256" }
+        ],
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "event",
+    "name": "LogCreated",
+    "inputs": [
+      { "name": "patientAddress", "type": "address", "indexed": true },
+      { "name": "accessor", "type": "address", "indexed": true },
+      { "name": "action", "type": "string", "indexed": false }
+    ]
+  }
+]

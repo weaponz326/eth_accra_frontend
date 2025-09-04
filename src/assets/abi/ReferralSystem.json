@@ -1,0 +1,21 @@
+[
+  {
+    "type": "function",
+    "name": "createReferral",
+    "inputs": [
+      { "name": "patientAddress", "type": "address" },
+      { "name": "toProvider", "type": "address" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "event",
+    "name": "ReferralCreated",
+    "inputs": [
+      { "name": "patientAddress", "type": "address", "indexed": true },
+      { "name": "fromProvider", "type": "address", "indexed": true },
+      { "name": "toProvider", "type": "address", "indexed": true }
+    ]
+  }
+]

@@ -1,0 +1,61 @@
+[
+  {
+    "type": "function",
+    "name": "registerPatient",
+    "inputs": [
+      { "name": "name", "type": "string" },
+      { "name": "bio", "type": "string" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "getPatient",
+    "inputs": [{ "name": "patientAddress", "type": "address" }],
+    "outputs": [
+      { "name": "name", "type": "string" },
+      { "name": "bio", "type": "string" },
+      { "name": "createdAt", "type": "uint256" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "grantAccess",
+    "inputs": [{ "name": "providerAddress", "type": "address" }],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "revokeAccess",
+    "inputs": [{ "name": "providerAddress", "type": "address" }],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "event",
+    "name": "PatientRegistered",
+    "inputs": [
+      { "name": "patientAddress", "type": "address", "indexed": true },
+      { "name": "name", "type": "string", "indexed": false }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "AccessGranted",
+    "inputs": [
+      { "name": "patientAddress", "type": "address", "indexed": true },
+      { "name": "providerAddress", "type": "address", "indexed": true }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "AccessRevoked",
+    "inputs": [
+      { "name": "patientAddress", "type": "address", "indexed": true },
+      { "name": "providerAddress", "type": "address", "indexed": true }
+    ]
+  }
+]
