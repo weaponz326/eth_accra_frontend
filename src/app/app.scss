@@ -1,0 +1,12 @@
+.min-vh-100 {
+  min-height: 100vh;
+}
+main {
+  margin-left: 250px; // Matches sidebar width
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 991px) {
+  main {
+    margin-left: 0; // Sidebar hidden on mobile
+  }
+}

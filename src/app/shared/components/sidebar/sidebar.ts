@@ -15,7 +15,7 @@ export class Sidebar {
   constructor(private authService: Auth) {}
 
   ngOnInit(): void {
-    this.authService.getUserAddress().subscribe(address => {
+    this.authService.getUserAddress().subscribe((address: any) => {
       if (address) {
         // TODO: Query contracts to set isPatient/isProvider
       }

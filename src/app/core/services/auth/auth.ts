@@ -1,37 +1,26 @@
 import { Injectable } from '@angular/core';
 import { ethers } from 'ethers';
-// import { Web3Modal } from '@web3modal/ethers';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment.development';
+import detectEthereumProvider from '@metamask/detect-provider';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Auth {
-  // private web3Modal: Web3Modal;
-  private provider: ethers.BrowserProvider | null = null;
-  private signer: ethers.Signer | null = null;
   private userAddress = new BehaviorSubject<string | null>(null);
+  provider?: ethers.BrowserProvider;
+  private signer: ethers.Signer | null = null;
 
-  constructor() {
-    // this.web3Modal = new Web3Modal({
-    //   projectId: environment.walletConnectProjectId || 'YOUR_WALLET_CONNECT_PROJECT_ID',
-    //   walletConnectVersion: 2
-    // });
-  }
-
-  async connectWallet(): Promise<void> {
-    try {
-      // const instance = await this.web3Modal.connect();
-      // this.provider = new ethers.BrowserProvider(instance);
-      // this.signer = await this.provider.getSigner();
-      // const address = await this.signer.getAddress();
-      // this.userAddress.next(address);
-      // localStorage.setItem('userAddress', address);
-    } catch (error) {
-      console.error('Wallet connection failed:', error);
-      throw error;
-    }
+  async connectWallet(): Promise<string> {
+    const provider: any = await detectEthereumProvider();
+    if (!provider) throw new Error('Install MetaMask');
+    await provider.request({ method: 'eth_requestAccounts' });
+    this.provider = new ethers.BrowserProvider(provider);
+    this.signer = await this.provider.getSigner();
+    const addr = await this.signer.getAddress();
+    this.userAddress.next(addr);
+    localStorage.setItem('userAddress', addr);
+    return addr;
   }
 
   getUserAddress(): Observable<string | null> {
@@ -48,8 +37,9 @@ export class Auth {
   }
 
   disconnect(): void {
-    // this.web3Modal.disconnect();
     this.userAddress.next(null);
     localStorage.removeItem('userAddress');
+    this.provider = undefined;
+    this.signer = null;
   }
 }

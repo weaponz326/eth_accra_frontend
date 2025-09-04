@@ -16,7 +16,7 @@ export class Navbar {
   constructor(private authService: Auth, private router: Router) {}
 
   ngOnInit(): void {
-    this.authService.getUserAddress().subscribe(address => {
+    this.authService.getUserAddress().subscribe((address: string | null) => {
       this.userAddress = address;
       // TODO: Check PatientRegistry/ProviderRegistry to set isPatient/isProvider
     });
