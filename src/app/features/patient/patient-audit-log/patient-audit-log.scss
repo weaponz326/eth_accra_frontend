@@ -1,0 +1,40 @@
+.card {
+  border-radius: 10px;
+}
+.timeline {
+  list-style: none;
+  padding: 0;
+  position: relative;
+}
+.timeline:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #007bff;
+  left: 20px;
+  margin-left: -2px;
+}
+.timeline-item {
+  margin-bottom: 20px;
+  position: relative;
+}
+.timeline-badge {
+  width: 12px;
+  height: 12px;
+  background: #007bff;
+  border-radius: 50%;
+  position: absolute;
+  left: 16px;
+  top: 10px;
+}
+.timeline-panel {
+  margin-left: 40px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 5px;
+}
+.timeline-title {
+  margin: 0;
+}

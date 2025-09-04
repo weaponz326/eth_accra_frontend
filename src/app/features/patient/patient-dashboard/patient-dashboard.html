@@ -1,1 +1,47 @@
-<p>patient-dashboard works!</p>
+<div class="container-fluid">
+  <h2 class="mb-4">Patient Dashboard</h2>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-header">Health Records</div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li *ngFor="let record of records" class="list-group-item">
+              {{ record.title }} ({{ record.createdAt | date:'short' }})
+            </li>
+            <li *ngIf="!records.length" class="list-group-item">No records found</li>
+          </ul>
+          <a routerLink="/patient/records" class="btn btn-link mt-2">View All Records</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-header">Invoices</div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li *ngFor="let invoice of invoices" class="list-group-item">
+              {{ invoice.description }} ({{ invoice.amount }} ETH, {{ invoice.status }})
+            </li>
+            <li *ngIf="!invoices.length" class="list-group-item">No invoices found</li>
+          </ul>
+          <a routerLink="/patient/billing" class="btn btn-link mt-2">Manage Invoices</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-header">Audit Logs</div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li *ngFor="let log of auditLogs" class="list-group-item">
+              {{ log.action }} by {{ log.accessor | slice:0:6 }}... ({{ log.timestamp | date:'short' }})
+            </li>
+            <li *ngIf="!auditLogs.length" class="list-group-item">No logs found</li>
+          </ul>
+          <a routerLink="/patient/audit" class="btn btn-link mt-2">View All Logs</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

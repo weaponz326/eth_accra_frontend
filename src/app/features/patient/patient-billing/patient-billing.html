@@ -1,1 +1,37 @@
-<p>patient-billing works!</p>
+<div class="container-fluid">
+  <h2 class="mb-4">Billing</h2>
+  <div class="card">
+    <div class="card-header">Your Invoices</div>
+    <div class="card-body">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Description</th>
+            <th>Amount (ETH)</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let invoice of invoices">
+            <td>{{ invoice.id }}</td>
+            <td>{{ invoice.description }}</td>
+            <td>{{ invoice.amount }}</td>
+            <td>{{ invoice.status }}</td>
+            <td>{{ invoice.createdAt | date:'short' }}</td>
+            <td>
+              <button *ngIf="invoice.status === 'Pending'" class="btn btn-primary btn-sm" (click)="payInvoice(invoice)" [disabled]="isSubmitting">
+                {{ isSubmitting ? 'Paying...' : 'Pay' }}
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="!invoices.length">
+            <td colspan="6" class="text-center">No invoices found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,23 @@
-<p>patient-audit-log works!</p>
+<div class="container-fluid">
+  <h2 class="mb-4">Audit Logs</h2>
+  <div class="card">
+    <div class="card-header">Access History</div>
+    <div class="card-body">
+      <ul class="timeline">
+        <li *ngFor="let log of auditLogs" class="timeline-item">
+          <div class="timeline-badge"></div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <h6 class="timeline-title">{{ log.action }}</h6>
+              <p><small class="text-muted">{{ log.timestamp | date:'medium' }}</small></p>
+            </div>
+            <div class="timeline-body">
+              <p>Accessor: {{ log.accessor | slice:0:6 }}...{{ log.accessor | slice:-4 }}</p>
+            </div>
+          </div>
+        </li>
+        <li *ngIf="!auditLogs.length" class="text-center">No audit logs found</li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,32 @@
-<p>patient-access works!</p>
+<div class="container-fluid">
+  <h2 class="mb-4">Manage Access</h2>
+  <div class="card mb-4">
+    <div class="card-header">Grant Access</div>
+    <div class="card-body">
+      <form [formGroup]="accessForm" (ngSubmit)="grantAccess()">
+        <div class="mb-3">
+          <label for="providerAddress" class="form-label">Provider Address</label>
+          <input type="text" class="form-control" id="providerAddress" formControlName="providerAddress" placeholder="0x...">
+          <div *ngIf="accessForm.get('providerAddress')?.invalid && accessForm.get('providerAddress')?.touched" class="text-danger">
+            Enter a valid Ethereum address.
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting || accessForm.invalid">
+          {{ isSubmitting ? 'Granting...' : 'Grant Access' }}
+        </button>
+      </form>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">Authorized Providers</div>
+    <div class="card-body">
+      <ul class="list-group">
+        <li *ngFor="let provider of providers" class="list-group-item d-flex justify-content-between align-items-center">
+          {{ provider | slice:0:6 }}...{{ provider | slice:-4 }}
+          <button class="btn btn-danger btn-sm" (click)="revokeAccess(provider)" [disabled]="isSubmitting">Revoke</button>
+        </li>
+        <li *ngIf="!providers.length" class="list-group-item">No providers authorized</li>
+      </ul>
+    </div>
+  </div>
+</div>
