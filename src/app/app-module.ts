@@ -19,6 +19,7 @@ import { ProviderAccess } from './features/provider/provider-access/provider-acc
 import { ProviderRecord } from './features/provider/provider-record/provider-record';
 import { ProviderBilling } from './features/provider/provider-billing/provider-billing';
 import { Referrals } from './features/provider/referrals/referrals';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,9 @@ import { Referrals } from './features/provider/referrals/referrals';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners()

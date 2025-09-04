@@ -1,1 +1,27 @@
-<p>provider-register works!</p>
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="card p-4 shadow" style="max-width: 500px; width: 100%;">
+    <h2 class="card-title text-center mb-4">Register as Provider</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="name" class="form-label">Full Name</label>
+        <input type="text" class="form-control" id="name" formControlName="name" placeholder="Enter your name">
+        <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" class="text-danger">
+          Name is required and must be at least 2 characters.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="specialty" class="form-label">Specialty</label>
+        <input type="text" class="form-control" id="specialty" formControlName="specialty" placeholder="Enter your specialty (e.g., Cardiology)">
+        <div *ngIf="registerForm.get('specialty')?.invalid && registerForm.get('specialty')?.touched" class="text-danger">
+          Specialty is required and must be at least 3 characters.
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary w-100" [disabled]="isSubmitting || registerForm.invalid">
+        {{ isSubmitting ? 'Registering...' : 'Register' }}
+      </button>
+    </form>
+    <p class="text-center mt-3">
+      Are you a patient? <a routerLink="/auth/patient-register">Register as Patient</a>
+    </p>
+  </div>
+</div>
