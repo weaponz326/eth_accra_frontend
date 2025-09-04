@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { create } from 'ipfs-http-client';
+// import { create } from 'ipfs-http-client';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -9,7 +9,7 @@ export class Ipfs {
   private ipfs: any;
 
   constructor() {
-    this.ipfs = create({ url: environment.ipfsGateway });
+    // this.ipfs = create({ url: environment.ipfsGateway });
   }
 
   async upload(data: string): Promise<string> {
