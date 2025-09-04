@@ -1,1 +1,31 @@
-<p>provider-access works!</p>
+<div class="container-fluid">
+  <h2 class="mb-4">Manage Patient Access</h2>
+  <div class="card mb-4">
+    <div class="card-header">Request Access</div>
+    <div class="card-body">
+      <form [formGroup]="accessForm" (ngSubmit)="requestAccess()">
+        <div class="mb-3">
+          <label for="patientAddress" class="form-label">Patient Address</label>
+          <input type="text" class="form-control" id="patientAddress" formControlName="patientAddress" placeholder="0x...">
+          <div *ngIf="accessForm.get('patientAddress')?.invalid && accessForm.get('patientAddress')?.touched" class="text-danger">
+            Enter a valid Ethereum address.
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting || accessForm.invalid">
+          {{ isSubmitting ? 'Requesting...' : 'Request Access' }}
+        </button>
+      </form>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">Authorized Patients</div>
+    <div class="card-body">
+      <ul class="list-group">
+        <li *ngFor="let patient of authorizedPatients" class="list-group-item">
+          {{ patient | slice:0:6 }}...{{ patient | slice:-4 }}
+        </li>
+        <li *ngIf="!authorizedPatients.length" class="list-group-item">No patients authorized</li>
+      </ul>
+    </div>
+  </div>
+</div>

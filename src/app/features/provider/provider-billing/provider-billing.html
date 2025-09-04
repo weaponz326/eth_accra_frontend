@@ -1,1 +1,64 @@
-<p>provider-billing works!</p>
+<div class="container-fluid">
+  <h2 class="mb-4">Billing</h2>
+  <div class="card mb-4">
+    <div class="card-header">Create Invoice</div>
+    <div class="card-body">
+      <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="patientAddress" class="form-label">Patient Address</label>
+          <input type="text" class="form-control" id="patientAddress" formControlName="patientAddress" placeholder="0x...">
+          <div *ngIf="invoiceForm.get('patientAddress')?.invalid && invoiceForm.get('patientAddress')?.touched" class="text-danger">
+            Enter a valid Ethereum address.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="amount" class="form-label">Amount (ETH)</label>
+          <input type="number" class="form-control" id="amount" formControlName="amount" placeholder="e.g., 0.1">
+          <div *ngIf="invoiceForm.get('amount')?.invalid && invoiceForm.get('amount')?.touched" class="text-danger">
+            Amount must be at least 0.01 ETH.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <input type="text" class="form-control" id="description" formControlName="description" placeholder="e.g., Consultation Fee">
+          <div *ngIf="invoiceForm.get('description')?.invalid && invoiceForm.get('description')?.touched" class="text-danger">
+            Description must be at least 5 characters.
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting || invoiceForm.invalid">
+          {{ isSubmitting ? 'Creating...' : 'Create Invoice' }}
+        </button>
+      </form>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">Your Invoices</div>
+    <div class="card-body">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Patient</th>
+            <th>Description</th>
+            <th>Amount (ETH)</th>
+            <th>Status</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let invoice of invoices">
+            <td>{{ invoice.id }}</td>
+            <td>{{ invoice.patientAddress | slice:0:6 }}...{{ invoice.patientAddress | slice:-4 }}</td>
+            <td>{{ invoice.description }}</td>
+            <td>{{ invoice.amount }}</td>
+            <td>{{ invoice.status }}</td>
+            <td>{{ invoice.createdAt | date:'short' }}</td>
+          </tr>
+          <tr *ngIf="!invoices.length">
+            <td colspan="6" class="text-center">No invoices found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

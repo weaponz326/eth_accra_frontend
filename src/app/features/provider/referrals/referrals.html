@@ -1,1 +1,51 @@
-<p>referrals works!</p>
+<div class="container-fluid">
+  <h2 class="mb-4">Referrals</h2>
+  <div class="card mb-4">
+    <div class="card-header">Create Referral</div>
+    <div class="card-body">
+      <form [formGroup]="referralForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="patientAddress" class="form-label">Patient Address</label>
+          <input type="text" class="form-control" id="patientAddress" formControlName="patientAddress" placeholder="0x...">
+          <div *ngIf="referralForm.get('patientAddress')?.invalid && referralForm.get('patientAddress')?.touched" class="text-danger">
+            Enter a valid Ethereum address.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="toProvider" class="form-label">Provider Address</label>
+          <input type="text" class="form-control" id="toProvider" formControlName="toProvider" placeholder="0x...">
+          <div *ngIf="referralForm.get('toProvider')?.invalid && referralForm.get('toProvider')?.touched" class="text-danger">
+            Enter a valid Ethereum address.
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting || referralForm.invalid">
+          {{ isSubmitting ? 'Creating...' : 'Create Referral' }}
+        </button>
+      </form>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">Your Referrals</div>
+    <div class="card-body">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Patient</th>
+            <th>To Provider</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let referral of referrals">
+            <td>{{ referral.patientAddress | slice:0:6 }}...{{ referral.patientAddress | slice:-4 }}</td>
+            <td>{{ referral.toProvider | slice:0:6 }}...{{ referral.toProvider | slice:-4 }}</td>
+            <td>{{ referral.createdAt | date:'short' }}</td>
+          </tr>
+          <tr *ngIf="!referrals.length">
+            <td colspan="3" class="text-center">No referrals found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

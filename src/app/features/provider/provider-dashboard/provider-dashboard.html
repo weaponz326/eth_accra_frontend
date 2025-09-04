@@ -1,1 +1,50 @@
-<p>provider-dashboard works!</p>
+<div class="container-fluid">
+  <h2 class="mb-4">Provider Dashboard</h2>
+  <div *ngIf="provider" class="mb-4">
+    <h4>Welcome, {{ provider.name }} ({{ provider.specialty }})</h4>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-header">Patients</div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li *ngFor="let patient of patients" class="list-group-item">
+              {{ patient | slice:0:6 }}...{{ patient | slice:-4 }}
+            </li>
+            <li *ngIf="!patients.length" class="list-group-item">No patients authorized</li>
+          </ul>
+          <a routerLink="/provider/access" class="btn btn-link mt-2">Manage Access</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-header">Invoices</div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li *ngFor="let invoice of invoices" class="list-group-item">
+              {{ invoice.description }} ({{ invoice.amount }} ETH, {{ invoice.status }})
+            </li>
+            <li *ngIf="!invoices.length" class="list-group-item">No invoices found</li>
+          </ul>
+          <a routerLink="/provider/billing" class="btn btn-link mt-2">Manage Invoices</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-header">Referrals</div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li *ngFor="let referral of referrals" class="list-group-item">
+              To {{ referral.toProvider | slice:0:6 }}... for {{ referral.patientAddress | slice:0:6 }}...
+            </li>
+            <li *ngIf="!referrals.length" class="list-group-item">No referrals found</li>
+          </ul>
+          <a routerLink="/provider/referrals" class="btn btn-link mt-2">Manage Referrals</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
