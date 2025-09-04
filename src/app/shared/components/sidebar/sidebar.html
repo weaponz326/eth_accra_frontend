@@ -1,1 +1,37 @@
-<p>sidebar works!</p>
+<div class="sidebar" [ngClass]="{'collapsed': isCollapsed}">
+  <button class="btn btn-outline-primary d-lg-none" (click)="toggleSidebar()">
+    {{ isCollapsed ? '☰' : '✕' }}
+  </button>
+  <ul class="nav flex-column" [ngClass]="{'d-none d-lg-block': isCollapsed}">
+    <li class="nav-item" *ngIf="isPatient">
+      <a class="nav-link" routerLink="/patient/dashboard" routerLinkActive="active">Dashboard</a>
+    </li>
+    <li class="nav-item" *ngIf="isPatient">
+      <a class="nav-link" routerLink="/patient/records" routerLinkActive="active">Records</a>
+    </li>
+    <li class="nav-item" *ngIf="isPatient">
+      <a class="nav-link" routerLink="/patient/access" routerLinkActive="active">Access</a>
+    </li>
+    <li class="nav-item" *ngIf="isPatient">
+      <a class="nav-link" routerLink="/patient/billing" routerLinkActive="active">Billing</a>
+    </li>
+    <li class="nav-item" *ngIf="isPatient">
+      <a class="nav-link" routerLink="/patient/audit" routerLinkActive="active">Audit Logs</a>
+    </li>
+    <li class="nav-item" *ngIf="isProvider">
+      <a class="nav-link" routerLink="/provider/dashboard" routerLinkActive="active">Dashboard</a>
+    </li>
+    <li class="nav-item" *ngIf="isProvider">
+      <a class="nav-link" routerLink="/provider/records" routerLinkActive="active">Records</a>
+    </li>
+    <li class="nav-item" *ngIf="isProvider">
+      <a class="nav-link" routerLink="/provider/access" routerLinkActive="active">Access</a>
+    </li>
+    <li class="nav-item" *ngIf="isProvider">
+      <a class="nav-link" routerLink="/provider/billing" routerLinkActive="active">Billing</a>
+    </li>
+    <li class="nav-item" *ngIf="isProvider">
+      <a class="nav-link" routerLink="/provider/referrals" routerLinkActive="active">Referrals</a>
+    </li>
+  </ul>
+</div>

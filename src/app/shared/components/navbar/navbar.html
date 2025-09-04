@@ -1,1 +1,38 @@
-<p>navbar works!</p>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Healthcare dApp</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item" *ngIf="isPatient">
+          <a class="nav-link" routerLink="/patient/dashboard" routerLinkActive="active">Dashboard</a>
+        </li>
+        <li class="nav-item" *ngIf="isPatient">
+          <a class="nav-link" routerLink="/patient/records" routerLinkActive="active">Records</a>
+        </li>
+        <li class="nav-item" *ngIf="isPatient">
+          <a class="nav-link" routerLink="/patient/access" routerLinkActive="active">Access</a>
+        </li>
+        <li class="nav-item" *ngIf="isPatient">
+          <a class="nav-link" routerLink="/patient/billing" routerLinkActive="active">Billing</a>
+        </li>
+        <li class="nav-item" *ngIf="isProvider">
+          <a class="nav-link" routerLink="/provider/dashboard" routerLinkActive="active">Dashboard</a>
+        </li>
+        <li class="nav-item" *ngIf="isProvider">
+          <a class="nav-link" routerLink="/provider/records" routerLinkActive="active">Records</a>
+        </li>
+        <li class="nav-item" *ngIf="isProvider">
+          <a class="nav-link" routerLink="/provider/referrals" routerLinkActive="active">Referrals</a>
+        </li>
+      </ul>
+      <div class="d-flex">
+        <span class="navbar-text me-2" *ngIf="userAddress">{{ userAddress | slice:0:6 }}...{{ userAddress | slice:-4 }}</span>
+        <button class="btn btn-primary" *ngIf="!userAddress" (click)="connectWallet()">Connect Wallet</button>
+        <button class="btn btn-outline-danger" *ngIf="userAddress" (click)="disconnectWallet()">Disconnect</button>
+      </div>
+    </div>
+  </div>
+</nav>
