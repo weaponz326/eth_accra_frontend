@@ -47,7 +47,14 @@ import { Referrals } from './features/provider/referrals/referrals';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    ToastrModule
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: false,
+      progressBar: true,
+      closeButton: true,
+      enableHtml: true
+    }),
   ],
   providers: [
     provideBrowserGlobalErrorListeners()
