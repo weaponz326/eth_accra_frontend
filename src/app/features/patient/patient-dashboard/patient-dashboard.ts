@@ -5,6 +5,7 @@ import { Audit as AuditService } from '../../../core/services/audit/audit';
 import { Record } from '../../../shared/models/record/record.model';
 import { Invoice } from '../../../shared/models/invoice/invoice.model';
 import { Auth } from '../../../core/services/auth/auth';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-patient-dashboard',
@@ -23,6 +24,7 @@ export class PatientDashboard {
     private recordService: RecordService,
     private billingService: BillingService,
     private auditService: AuditService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -32,23 +34,23 @@ export class PatientDashboard {
   private loadData(): void {
     this.authService.getUserAddress().subscribe(address => {
       if (!address) {
-        alert('Please connect your wallet.');
+        this.toastr.error('Please connect your wallet.');
         return;
       }
       // Load records
       this.recordService.getRecords(address, this.encryptionKey).subscribe({
         next: (records) => this.records = records,
-        error: (err) => alert('Failed to load records: ' + err.message)
+        error: (err) => this.toastr.error('Failed to load records: ' + err.message)
       });
       // Load invoices
       this.billingService.getInvoices(address).subscribe({
         next: (invoices) => this.invoices = invoices,
-        error: (err) => alert('Failed to load invoices: ' + err.message)
+        error: (err) => this.toastr.error('Failed to load invoices: ' + err.message)
       });
       // Load audit logs
       this.auditService.getAuditLogs(address).subscribe({
         next: (logs) => this.auditLogs = logs,
-        error: (err) => alert('Failed to load audit logs: ' + err.message)
+        error: (err) => this.toastr.error('Failed to load audit logs: ' + err.message)
       });
     });
   }

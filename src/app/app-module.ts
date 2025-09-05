@@ -1,5 +1,7 @@
 import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
 
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
@@ -19,7 +21,6 @@ import { ProviderAccess } from './features/provider/provider-access/provider-acc
 import { ProviderRecord } from './features/provider/provider-record/provider-record';
 import { ProviderBilling } from './features/provider/provider-billing/provider-billing';
 import { Referrals } from './features/provider/referrals/referrals';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastrModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners()

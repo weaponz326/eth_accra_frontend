@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Auth } from '../../../core/services/auth/auth';
 import { Provider } from '../../../core/services/provider/provider';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-provider-register',
@@ -19,6 +20,7 @@ export class ProviderRegister {
     private authService: Auth,
     private providerService: Provider,
     private router: Router,
+    private toastr: ToastrService
   ) {
     this.registerForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
@@ -28,7 +30,7 @@ export class ProviderRegister {
 
   async onSubmit(): Promise<void> {
     if (this.registerForm.invalid) {
-      alert('Please fill in all required fields correctly.');
+      this.toastr.error('Please fill in all required fields correctly.');
       return;
     }
 
@@ -40,10 +42,10 @@ export class ProviderRegister {
       }
       const { name, specialty } = this.registerForm.value;
       await this.providerService.registerProvider(name, specialty, signer).toPromise();
-      alert('Provider registered successfully!');
+      this.toastr.success('Provider registered successfully!');
       this.router.navigate(['/provider/dashboard']);
     } catch (error: any) {
-      alert(error.message || 'Registration failed. Please try again.');
+      this.toastr.error(error.message || 'Registration failed. Please try again.');
     } finally {
       this.isSubmitting = false;
     }

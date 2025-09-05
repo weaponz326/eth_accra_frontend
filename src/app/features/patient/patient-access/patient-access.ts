@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Auth } from '../../../core/services/auth/auth';
 import { Patient } from '../../../core/services/patient/patient';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-patient-access',
@@ -18,6 +19,7 @@ export class PatientAccess {
     private fb: FormBuilder,
     private authService: Auth,
     private patientService: Patient,
+    private toastr: ToastrService
   ) {
     this.accessForm = this.fb.group({
       providerAddress: ['', [Validators.required, Validators.pattern(/^0x[a-fA-F0-9]{40}$/)]]
@@ -30,7 +32,7 @@ export class PatientAccess {
 
   async grantAccess(): Promise<void> {
     if (this.accessForm.invalid) {
-      alert('Please enter a valid provider address.');
+      this.toastr.error('Please enter a valid provider address.');
       return;
     }
 
@@ -40,10 +42,10 @@ export class PatientAccess {
       if (!signer) throw new Error('No wallet connected.');
       const { providerAddress } = this.accessForm.value;
       await this.patientService.grantAccess(providerAddress, signer).toPromise();
-      alert('Access granted successfully!');
+      this.toastr.success('Access granted successfully!');
       this.accessForm.reset();
     } catch (error: any) {
-      alert(error.message || 'Failed to grant access.');
+      this.toastr.error(error.message || 'Failed to grant access.');
     } finally {
       this.isSubmitting = false;
     }
@@ -55,10 +57,10 @@ export class PatientAccess {
       const signer = this.authService.getSigner();
       if (!signer) throw new Error('No wallet connected.');
       await this.patientService.revokeAccess(providerAddress, signer).toPromise();
-      alert('Access revoked successfully!');
+      this.toastr.success('Access revoked successfully!');
       this.providers = this.providers.filter(p => p !== providerAddress);
     } catch (error: any) {
-      alert(error.message || 'Failed to revoke access.');
+      this.toastr.error(error.message || 'Failed to revoke access.');
     } finally {
       this.isSubmitting = false;
     }

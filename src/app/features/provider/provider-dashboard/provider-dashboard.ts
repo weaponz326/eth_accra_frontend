@@ -4,6 +4,7 @@ import { Provider } from '../../../shared/models/provider/provider.model';
 import { Auth } from '../../../core/services/auth/auth';
 import { Provider as ProviderService } from '../../../core/services/provider/provider';
 import { Billing as billingService } from '../../../core/services/billing/billing';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-provider-dashboard',
@@ -21,6 +22,7 @@ export class ProviderDashboard {
     private authService: Auth,
     private providerService: ProviderService,
     private billingService: billingService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -30,18 +32,18 @@ export class ProviderDashboard {
   private loadData(): void {
     this.authService.getUserAddress().subscribe(address => {
       if (!address) {
-        alert('Please connect your wallet.');
+        this.toastr.error('Please connect your wallet.');
         return;
       }
       // Load provider profile
       this.providerService.getProvider(address).subscribe({
         next: (provider) => this.provider = provider,
-        error: (err) => alert('Failed to load provider profile: ' + err.message)
+        error: (err) => this.toastr.error('Failed to load provider profile: ' + err.message)
       });
       // Load invoices
       this.billingService.getInvoices(address).subscribe({
         next: (invoices) => this.invoices = invoices,
-        error: (err) => alert('Failed to load invoices: ' + err.message)
+        error: (err) => this.toastr.error('Failed to load invoices: ' + err.message)
       });
       // TODO: Load referrals and authorized patients from contracts
     });

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Auth } from '../../../core/services/auth/auth';
 import { Records as RecordService } from '../../../core/services/record/record';
 import { Record } from '../../../shared/models/record/record.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-provider-record',
@@ -21,6 +22,7 @@ export class ProviderRecord {
     private fb: FormBuilder,
     private authService: Auth,
     private recordService: RecordService,
+    private toastr: ToastrService
   ) {
     this.recordForm = this.fb.group({
       patientAddress: ['', [Validators.required, Validators.pattern(/^0x[a-fA-F0-9]{40}$/)]],
@@ -33,26 +35,26 @@ export class ProviderRecord {
 
   async loadRecords(): Promise<void> {
     if (this.recordForm.get('patientAddress')?.invalid) {
-      alert('Please enter a valid patient address.');
+      this.toastr.error('Please enter a valid patient address.');
       return;
     }
 
     this.patientAddress = this.recordForm.get('patientAddress')?.value;
     this.authService.getUserAddress().subscribe(providerAddress => {
       if (!providerAddress) {
-        alert('Please connect your wallet.');
+        this.toastr.error('Please connect your wallet.');
         return;
       }
       this.recordService.getRecords(this.patientAddress, this.encryptionKey).subscribe({
         next: (records) => this.records = records.filter(r => r.providerAddress === providerAddress),
-        error: (err) => alert('Failed to load records: ' + err.message)
+        error: (err) => this.toastr.error('Failed to load records: ' + err.message)
       });
     });
   }
 
   async onSubmit(): Promise<void> {
     if (this.recordForm.invalid) {
-      alert('Please fill in all required fields correctly.');
+      this.toastr.error('Please fill in all required fields correctly.');
       return;
     }
 
@@ -63,11 +65,11 @@ export class ProviderRecord {
       const providerAddress = await signer.getAddress();
       const { patientAddress, title, data } = this.recordForm.value;
       await this.recordService.addRecord({ title, data }, patientAddress, providerAddress, this.encryptionKey, signer).toPromise();
-      alert('Record added successfully!');
+      this.toastr.success('Record added successfully!');
       this.recordForm.reset();
       this.loadRecords();
     } catch (error: any) {
-      alert(error.message || 'Failed to add record.');
+      this.toastr.error(error.message || 'Failed to add record.');
     } finally {
       this.isSubmitting = false;
     }

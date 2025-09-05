@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Auth } from '../../../core/services/auth/auth';
 import { Provider } from '../../../core/services/provider/provider';
 import { Patient } from '../../../core/services/patient/patient';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ export class Login {
     private patientService: Patient,
     private providerService: Provider,
     private router: Router,
+    private toastr: ToastrService
   ) {}
 
   async connectWallet(): Promise<void> {
@@ -44,7 +46,7 @@ export class Login {
       // New user, redirect to choose registration type
       this.router.navigate(['/auth/patient-register']);
     } catch (error) {
-      alert('Failed to connect wallet. Please try again.');
+      this.toastr.error('Failed to connect wallet. Please try again.');
     }
   }
 }

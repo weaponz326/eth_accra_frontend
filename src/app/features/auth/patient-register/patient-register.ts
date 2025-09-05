@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Auth } from '../../../core/services/auth/auth';
 import { Patient } from '../../../core/services/patient/patient';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-patient-register',
@@ -19,6 +20,7 @@ export class PatientRegister {
     private authService: Auth,
     private patientService: Patient,
     private router: Router,
+    private toastr: ToastrService
   ) {
     this.registerForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
@@ -28,7 +30,7 @@ export class PatientRegister {
 
   async onSubmit(): Promise<void> {
     if (this.registerForm.invalid) {
-      alert('Please fill in all required fields correctly.');
+      this.toastr.error('Please fill in all required fields correctly.');
       return;
     }
 
@@ -40,10 +42,10 @@ export class PatientRegister {
       }
       const { name, bio } = this.registerForm.value;
       await this.patientService.registerPatient(name, bio, signer).toPromise();
-      alert('Patient registered successfully!');
+      this.toastr.success('Patient registered successfully!');
       this.router.navigate(['/patient/dashboard']);
     } catch (error: any) {
-      alert(error.message || 'Registration failed. Please try again.');
+      this.toastr.error(error.message || 'Registration failed. Please try again.');
     } finally {
       this.isSubmitting = false;
     }

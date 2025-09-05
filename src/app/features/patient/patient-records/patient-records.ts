@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Auth } from '../../../core/services/auth/auth';
 import { Records as RecordService } from '../../../core/services/record/record';
 import { Record } from '../../../shared/models/record/record.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-patient-records',
@@ -20,6 +21,7 @@ export class PatientRecords {
     private fb: FormBuilder,
     private authService: Auth,
     private recordService: RecordService,
+    private toastr: ToastrService
   ) {
     this.recordForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
@@ -34,19 +36,19 @@ export class PatientRecords {
   private loadRecords(): void {
     this.authService.getUserAddress().subscribe(address => {
       if (!address) {
-        alert('Please connect your wallet.');
+        this.toastr.error('Please connect your wallet.');
         return;
       }
       this.recordService.getRecords(address, this.encryptionKey).subscribe({
         next: (records) => this.records = records,
-        error: (err) => alert('Failed to load records: ' + err.message)
+        error: (err) => this.toastr.error('Failed to load records: ' + err.message)
       });
     });
   }
 
   async onSubmit(): Promise<void> {
     if (this.recordForm.invalid) {
-      alert('Please fill in all required fields correctly.');
+      this.toastr.error('Please fill in all required fields correctly.');
       return;
     }
 
@@ -57,11 +59,11 @@ export class PatientRecords {
       const address = await signer.getAddress();
       const { title, data } = this.recordForm.value;
       await this.recordService.addRecord({ title, data }, address, address, this.encryptionKey, signer).toPromise();
-      alert('Record added successfully!');
+      this.toastr.success('Record added successfully!');
       this.recordForm.reset();
       this.loadRecords();
     } catch (error: any) {
-      alert(error.message || 'Failed to add record.');
+      this.toastr.error(error.message || 'Failed to add record.');
     } finally {
       this.isSubmitting = false;
     }

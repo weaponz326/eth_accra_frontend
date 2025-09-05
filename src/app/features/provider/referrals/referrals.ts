@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Auth } from '../../../core/services/auth/auth';
 import { Provider } from '../../../core/services/provider/provider';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-referrals',
@@ -18,6 +19,7 @@ export class Referrals {
     private fb: FormBuilder,
     private authService: Auth,
     private providerService: Provider,
+    private toastr: ToastrService
   ) {
     this.referralForm = this.fb.group({
       patientAddress: ['', [Validators.required, Validators.pattern(/^0x[a-fA-F0-9]{40}$/)]],
@@ -31,7 +33,7 @@ export class Referrals {
 
   async onSubmit(): Promise<void> {
     if (this.referralForm.invalid) {
-      alert('Please fill in all required fields correctly.');
+      this.toastr.error('Please fill in all required fields correctly.');
       return;
     }
 
@@ -41,11 +43,11 @@ export class Referrals {
       if (!signer) throw new Error('No wallet connected.');
       const { patientAddress, toProvider } = this.referralForm.value;
       await this.providerService.createReferral(patientAddress, toProvider, signer).toPromise();
-      alert('Referral created successfully!');
+      this.toastr.success('Referral created successfully!');
       this.referralForm.reset();
       // TODO: Reload referrals
     } catch (error: any) {
-      alert(error.message || 'Failed to create referral.');
+      this.toastr.error(error.message || 'Failed to create referral.');
     } finally {
       this.isSubmitting = false;
     }
