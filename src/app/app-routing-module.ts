@@ -23,6 +23,7 @@ const routes: Routes = [
     path: 'patient',
     // canActivate: [AuthGuard],
     children: [
+      { path: '', component: PatientDashboard },
       { path: 'dashboard', component: PatientDashboard },
       { path: 'access', component: PatientAccess },
       { path: 'records', component: PatientRecords },
@@ -34,6 +35,7 @@ const routes: Routes = [
     path: 'provider',
     // canActivate: [AuthGuard],
     children: [
+      { path: '', component: ProviderDashboard },
       { path: 'dashboard', component: ProviderDashboard },
       { path: 'access', component: ProviderAccess },
       { path: 'records', component: ProviderRecord },

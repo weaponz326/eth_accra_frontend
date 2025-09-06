@@ -92,7 +92,7 @@ export class Auth {
 
     // Instantiate the SubdomainRegistrar contract
     const ensRegistrarContract = new ethers.Contract(
-      environment.contractAddresses.sudomainRegistrar,
+      environment.contractAddresses.subdomainRegistrar,
       SubdomainRegistrarABI,
       this.signer
     );
