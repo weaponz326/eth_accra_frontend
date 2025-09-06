@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'app-patient-register',
   standalone: false,
   templateUrl: './patient-register.html',
-  styleUrl: './patient-register.scss'
+  styleUrl: './patient-register.scss',
 })
 export class PatientRegister {
   registerForm: FormGroup;
@@ -24,7 +24,8 @@ export class PatientRegister {
   ) {
     this.registerForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
-      bio: ['', [Validators.required, Validators.minLength(10)]]
+      bio: ['', [Validators.required, Validators.minLength(10)]],
+      ensName: ['', [Validators.required, Validators.pattern(/^[a-z0-9-]+$/)]],
     });
   }
 
@@ -40,12 +41,33 @@ export class PatientRegister {
       if (!signer) {
         throw new Error('No wallet connected. Please connect your wallet.');
       }
-      const { name, bio } = this.registerForm.value;
-      await this.patientService.registerPatient(name, bio, signer).toPromise();
+
+      const { name, bio, ensName } = this.registerForm.value;
+      const fullEnsName = `${ensName}.clinic-data.eth`;
+      const userAddress = await signer.getAddress();
+
+      // Resolve the ENS name to an address to check if it's already in use
+      const resolvedAddress = await this.authService.resolveEnsName(
+        fullEnsName
+      );
+      if (resolvedAddress && resolvedAddress !== userAddress) {
+        throw new Error(
+          `ENS name "${fullEnsName}" is already taken by another user.`
+        );
+      }
+
+      // First, register the patient on-chain
+      await this.patientService
+        .registerPatient(name, bio, signer)
+        .toPromise();
+
+      // Next, register the ENS name
+      await this.authService.registerEns(fullEnsName, userAddress);
+
       this.toastr.success('Patient registered successfully!');
       this.router.navigate(['/patient/dashboard']);
     } catch (error: any) {
-      this.toastr.error(error.message || 'Registration failed. Please try again.');
+      this.toastr.error(error.message || 'An error occurred during registration.');
     } finally {
       this.isSubmitting = false;
     }

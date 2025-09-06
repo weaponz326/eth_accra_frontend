@@ -10,12 +10,22 @@
         </div>
       </div>
       <div class="mb-3">
+        <label for="ensName" class="form-label">ENS Name</label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="ensName" formControlName="ensName" placeholder="e.g., dr-smith" />
+          <span class="input-group-text">.clinic-data.eth</span>
+        </div>
+        <div *ngIf="registerForm.get('ensName')?.invalid && registerForm.get('ensName')?.touched" class="text-danger" >
+          ENS Name is required and must be in a valid format (e.g., provider-name-123).
+        </div>
+      </div>
+      <div class="mb-3">
         <label for="specialty" class="form-label">Specialty</label>
         <input type="text" class="form-control" id="specialty" formControlName="specialty" placeholder="Enter your specialty (e.g., Cardiology)">
         <div *ngIf="registerForm.get('specialty')?.invalid && registerForm.get('specialty')?.touched" class="text-danger">
           Specialty is required and must be at least 3 characters.
         </div>
-      </div>
+      </div>      
       <button type="submit" class="btn btn-primary w-100" [disabled]="isSubmitting || registerForm.invalid">
         {{ isSubmitting ? 'Registering...' : 'Register' }}
       </button>

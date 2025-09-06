@@ -8,6 +8,7 @@ export const environment = {
     records: '0x...',
     auditTrail: '0x...',
     billing: '0x...',
-    referralSystem: '0x...'
+    referralSystem: '0x...',
+    sudomainRegistrar: '0x...'
   }
 };
